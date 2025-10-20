@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>معرض السيارات</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: "Segoe UI", sans-serif; background:#e9f2ff; color:#333; }
+
+    /* ===== HEADER + LOGIN ===== */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 5%;
+      background: linear-gradient(90deg, #1e3c72, #2a5298);
+      color: white;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    header h1 { font-size:2.5rem; text-shadow:0 0 15px #00bfff,0 0 25px #00bfff; }
+    .login-form {
+      background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.35));
+      padding: 15px 20px;
+      border-radius: 12px;
+      backdrop-filter: blur(5px);
+      text-align:center;
+      min-width:250px;
+      box-shadow:0 0 10px rgba(0,0,0,0.1);
+    }
+    .login-form h3 { color:#fff; font-size:1.2rem; margin-bottom:10px; text-shadow:0 0 5px #00bfff; }
+    .login-form input { width:90%; margin:5px 0; padding:8px; border-radius:6px; border:none; font-size:0.95rem; }
+    .login-form input[type="text"], .login-form input[type="password"] { background: rgba(255,255,255,0.9); }
+    .login-form button { width:90%; padding:8px; margin-top:8px; border:none; border-radius:6px; background:#0077cc; color:#fff; font-weight:bold; cursor:pointer; transition:0.3s; }
+    .login-form button:hover{background:#005fa3;}
+
+    /* ===== SITE INFO ===== */
+    .site-info { padding:30px 5%; text-align:center; font-size:1.2rem; line-height:1.6; color:#1e3c72; }
+
+    /* ===== SEARCH ===== */
+    .search-bar { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; padding:20px 5%; }
+    .search-bar input { padding:8px 10px; width:200px; border-radius:6px; border:1px solid #ccc; }
+    .search-bar select { padding:8px 10px; border-radius:6px; border:1px solid #ccc; }
+    .search-bar button { padding:8px 15px; border:none; border-radius:6px; background:#0077cc; color:#fff; cursor:pointer; transition:0.3s; }
+    .search-bar button:hover{background:#005fa3;}
+
+    /* ===== STATS BOXES ===== */
+    .stats { display:flex; justify-content:center; gap:20px; flex-wrap:wrap; padding:20px 5%; }
+    .stat-box {
+      background: linear-gradient(135deg,#fff,#cce0ff);
+      padding:20px; border-radius:12px;
+      min-width:150px; text-align:center; box-shadow:0 4px 10px rgba(0,0,0,0.15);
+    }
+    .stat-box h3 { color:#1e3c72; margin-bottom:5px; font-size:1.1rem; }
+    .stat-box p { font-size:1rem; color:#555; margin-bottom:10px; }
+    .stat-box button { padding:6px 12px; border:none; border-radius:5px; background:#0077cc; color:#fff; cursor:pointer; font-size:0.95rem; }
+    .stat-box button:hover{background:#005fa3;}
+
+    /* ===== CARS GRID ===== */
+    .cars { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; padding:20px 5%; }
+    .car-card {
+      background: linear-gradient(135deg,#ffffff,#cce0ff);
+      border-radius:12px; width:260px; text-align:center;
+      padding:12px; box-shadow:0 4px 10px rgba(0,0,0,0.2); transition:transform 0.3s;
+    }
+    .car-card:hover{transform:translateY(-4px);}
+    .car-card img{width:100%; border-radius:10px; margin-bottom:8px;}
+    .car-card h3{color:#1e3c72; margin-bottom:4px; font-size:1.05rem;}
+    .car-card p{color:#555; font-size:0.95rem; margin-bottom:6px;}
+    .car-card button{padding:6px 12px; margin:4px; border:none; border-radius:5px; background:#0077cc; color:#fff; cursor:pointer; font-size:0.9rem;}
+    .car-card button:hover{background:#005fa3;}
+
+    /* ===== MODAL ===== */
+    .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; padding:10px; }
+    .modal-content { background:white; padding:20px; border-radius:10px; width:100%; max-width:380px; text-align:center; position:relative; }
+    .close-btn { position:absolute; top:10px; right:15px; font-size:20px; cursor:pointer; color:#333; }
+
+    /* ===== FOOTER ===== */
+    footer{background:linear-gradient(90deg,#1e3c72,#2a5298); color:white; text-align:center; padding:20px; margin-top:30px;}
+    footer .social{margin:10px 0;}
+    footer a{color:#00bfff; text-decoration:none; margin:0 10px; font-weight:bold;}
+    footer a:hover{color:#fff;text-decoration:underline;}
+
+    /* ===== RESPONSIVE ===== */
+    @media(max-width:900px){header{flex-direction:column;align-items:center;} .login-form{width:90%;} .search-bar input, .search-bar select{width:45%;} .stat-box{width:45%;}}
+    @media(max-width:500px){header h1{font-size:2rem;} .site-info{font-size:1rem;} .car-card{width:90%;}}
+  </style>
+</head>
+<body>
+
+  <!-- HEADER + LOGIN -->
+  <header>
+    <h1>معرض السيارات</h1>
+    <div class="login-form">
+      <h3>تسجيل الدخول</h3>
+      <input type="text" placeholder="اسم المستخدم">
+      <input type="password" placeholder="كلمة المرور">
+      <button>تسجيل الدخول</button>
+    </div>
+  </header>
+
+  <!-- SITE INFO -->
+  <div class="site-info">
+    مرحبًا بكم في معرض السيارات، أفضل مكان لاختيار سيارات جديدة ومستعملة بجودة عالية وأسعار مناسبة.
+  </div>
+
+  <!-- SEARCH -->
+  <div class="search-bar">
+    <input type="text" placeholder="ابحث بالموديل">
+    <select>
+      <option value="all">الكل</option>
+      <option value="hyundai">هيونداي</option>
+      <option value="toyota">تويوتا</option>
+      <option value="bmw">بي إم دبليو</option>
+    </select>
+    <button>بحث</button>
+  </div>
+
+  <!-- STATS / ADS -->
+  <div class="stats">
+    <div class="stat-box">
+      <h3>القسط</h3>
+      <p>+120</p>
+    </div>
+    <div class="stat-box">
+      <h3>السيارات المضافة اليوم</h3>
+      <p>+45</p>
+    </div>
+    <div class="stat-box">
+      <h3>ضمان الموقع</h3>
+      <p>5 سنوات</p>
+    </div>
+    <div class="stat-box">
+      <h3>أضف إعلانك هنا</h3>
+      <p>تسويق مباشر</p>
+      <button>إنشاء إعلان</button>
+    </div>
+  </div>
+
+  <!-- CARS GRID -->
+  <section class="cars">
+    <div class="car-card">
+      <img src="https://via.placeholder.com/300x200?text=Hyundai+Sonata" alt="Hyundai">
+      <h3>هيونداي سوناتا</h3>
+      <p>الموديل: 2023</p>
+      <button onclick="showDetails('هيونداي سوناتا 2023 - محرك 2.5 لتر - أوتوماتيك')">تفاصيل</button>
+      <button>تواصل</button>
+    </div>
+    <div class="car-card">
+      <img src="https://via.placeholder.com/300x200?text=Toyota+Camry" alt="Toyota">
+      <h3>تويوتا كامري</h3>
+      <p>الموديل: 2022</p>
+      <button onclick="showDetails('تويوتا كامري 2022 - اقتصادية - دفع أمامي')">تفاصيل</button>
+      <button>تواصل</button>
+    </div>
+    <div class="car-card">
+      <img src="https://via.placeholder.com/300x200?text=BMW+X5" alt="BMW">
+      <h3>بي إم دبليو X5</h3>
+      <p>الموديل: 2021</p>
+      <button onclick="showDetails('بي إم دبليو X5 2021 - دفع رباعي - فخمة جدًا')">تفاصيل</button>
+      <button>تواصل</button>
+    </div>
+  </section>
+
+  <!-- MODAL -->
+  <div class="modal" id="carModal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <h2>تفاصيل السيارة</h2>
+      <p id="carInfo"></p>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 معرض السيارات - جميع الحقوق محفوظة</p>
+    <div class="social">
+      <a href="#">واتساب</a> |
+      <a href="#">فيسبوك</a> |
+      <a href="#">موقعنا الإلكتروني</a>
+    </div>
+  </footer>
+
+  <script>
+    function showDetails(info){
+      document.getElementById("carInfo").textContent = info;
+      document.getElementById("carModal").style.display = "flex";
+    }
+    function closeModal(){ document.getElementById("carModal").style.display="none"; }
+    window.onclick=function(e){ if(e.target==document.getElementById("carModal")) closeModal(); }
+  </script>
+
+</body>
+</html>
